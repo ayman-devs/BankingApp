@@ -5,6 +5,7 @@ import ma.lafnoune.bankingapp.DTO.BankAccountResponseDTO;
 import ma.lafnoune.bankingapp.Entities.BankAccount;
 import ma.lafnoune.bankingapp.Mappers.AccountMapper;
 import ma.lafnoune.bankingapp.Repositories.BankAccountRepository;
+import ma.lafnoune.bankingapp.exceptions.AccountNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,15 +49,12 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public BankAccountResponseDTO updateAccount(String id, BankAccountRequestDTO bankAccountDTO) {
         BankAccount account = bankAccountRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(String.format("Account %s not found", id)));
+                .orElseThrow(() -> new AccountNotFoundException(id));
 
         // if (bankAccount.getId() != null) account.setId(bankAccount.getId());
         if (bankAccountDTO.getBalance() != null) account.setBalance(bankAccountDTO.getBalance());
         if (bankAccountDTO.getCurrency() != null) account.setCurrency(bankAccountDTO.getCurrency());
         if (bankAccountDTO.getType() != null) account.setType(bankAccountDTO.getType());
-
-        // Mise à jour de la date (comme vous l'aviez fait dans le contrôleur)
-        account.setCreatedAt(new Date());
 
         BankAccount savedBankAccount = bankAccountRepository.save(account);
         return accountMapper.fromBankAccountResponseDTO(savedBankAccount);
@@ -73,12 +71,13 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public BankAccountResponseDTO getAccountById(String id) {
         BankAccount account = bankAccountRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(String.format("Account %s not found", id)));
+                .orElseThrow(() -> new AccountNotFoundException(id));
         return accountMapper.fromBankAccountResponseDTO(account);
     }
 
     @Override
     public void deleteAccount(String id) {
+        if (!bankAccountRepository.existsById(id)) throw new AccountNotFoundException(id);
         bankAccountRepository.deleteById(id);
     }
 }

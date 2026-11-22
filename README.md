@@ -155,3 +155,88 @@ mutation {
 ```
 
 Exceptions thrown during GraphQL execution (for example "Bank account X not found") are converted into readable GraphQL errors by `CustomDataFetcherExceptionResolver`.
+
+
+## Tests
+
+Tests réalisés le 22/11/2026 dans le navigateur, avec l'application lancée en local (`http://localhost:8080`) : Swagger UI pour l'API REST, GraphiQL pour GraphQL, et la console H2.
+
+### API REST (`/api`)
+
+**Lister tous les comptes**
+
+![REST - Lister tous les comptes](screens/01-rest-get-all.png)
+
+**Consulter un compte par id**
+
+![REST - Consulter un compte par id](screens/02-rest-get-by-id.png)
+
+**Créer un compte**
+
+![REST - Créer un compte](screens/03-rest-post.png)
+
+**Modifier un compte**
+
+![REST - Modifier un compte](screens/04-rest-put.png)
+
+**Supprimer un compte**
+
+![REST - Supprimer un compte](screens/05-rest-delete.png)
+
+**Consulter le compte supprimé (404 Not Found attendu)**
+
+![REST - Consulter le compte supprimé (404 Not Found attendu)](screens/06-rest-get-deleted.png)
+
+### Spring Data REST
+
+**Liste paginée des comptes**
+
+![Spring Data REST - Liste paginée des comptes](screens/07-datarest-bankaccounts.png)
+
+**Projection p1**
+
+![Spring Data REST - Projection p1](screens/08-datarest-projection.png)
+
+**Recherche par type**
+
+![Spring Data REST - Recherche par type](screens/09-datarest-bytype.png)
+
+**Liste des clients**
+
+![Spring Data REST - Liste des clients](screens/10-datarest-customers.png)
+
+### GraphQL (`/graphql`)
+
+**Query accountList**
+
+![GraphQL - Query accountList](screens/11-graphql-accountList.png)
+
+**Query bankAccountById**
+
+![GraphQL - Query bankAccountById](screens/12-graphql-bankAccountById.png)
+
+**Query customers**
+
+![GraphQL - Query customers](screens/13-graphql-customers.png)
+
+**Mutation addAccount**
+
+![GraphQL - Mutation addAccount](screens/14-graphql-addAccount.png)
+
+**Mutation updateAccount**
+
+![GraphQL - Mutation updateAccount](screens/15-graphql-updateAccount.png)
+
+**Mutation deleteAccount**
+
+![GraphQL - Mutation deleteAccount](screens/16-graphql-deleteAccount.png)
+
+**Gestion d'erreur (compte inexistant)**
+
+![GraphQL - Gestion d'erreur (compte inexistant)](screens/17-graphql-error.png)
+
+### Base de données H2
+
+**Contenu de la table BANK_ACCOUNT**
+
+![H2 - SELECT * FROM BANK_ACCOUNT](screens/18-h2-console.png)
